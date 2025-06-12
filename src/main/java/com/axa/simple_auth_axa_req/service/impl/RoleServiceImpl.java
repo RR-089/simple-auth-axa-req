@@ -2,6 +2,7 @@ package com.axa.simple_auth_axa_req.service.impl;
 
 
 import com.axa.simple_auth_axa_req.dto.role.RoleDTO;
+import com.axa.simple_auth_axa_req.dto.role.RoleInfoDTO;
 import com.axa.simple_auth_axa_req.dto.role.UpsertRoleDTO;
 import com.axa.simple_auth_axa_req.model.Role;
 import com.axa.simple_auth_axa_req.repository.RoleRepository;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,13 +20,23 @@ import java.util.List;
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
-    public static RoleDTO mapToRoleDTO(Role role) {
+    public static RoleDTO mapToDTO(Role role) {
         return RoleDTO.builder()
                       .id(role.getId())
                       .name(role.getName())
                       .user(UserServiceImpl.mapToInfoDTO(role.getUser()))
-                      //.permissions()
+                      .permissions(role.getPermissions()
+                                       .stream().map(PermissionServiceImpl::mapToDto)
+                                       .collect(Collectors.toSet()))
                       .build();
+    }
+
+    public static RoleInfoDTO mapToInfoDTO(Role role) {
+        return RoleInfoDTO.builder()
+                          .id(role.getId())
+                          .name(role.getName())
+                          .user(UserServiceImpl.mapToInfoDTO(role.getUser()))
+                          .build();
     }
 
     @Override

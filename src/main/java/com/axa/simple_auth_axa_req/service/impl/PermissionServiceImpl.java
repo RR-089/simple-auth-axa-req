@@ -2,6 +2,7 @@ package com.axa.simple_auth_axa_req.service.impl;
 
 import com.axa.simple_auth_axa_req.dto.permission.PermissionDTO;
 import com.axa.simple_auth_axa_req.dto.permission.UpsertPermissionDTO;
+import com.axa.simple_auth_axa_req.model.Permission;
 import com.axa.simple_auth_axa_req.repository.PermissionRepository;
 import com.axa.simple_auth_axa_req.service.PermissionService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,14 @@ import java.util.List;
 @Slf4j
 public class PermissionServiceImpl implements PermissionService {
     private final PermissionRepository permissionRepository;
+
+    public static PermissionDTO mapToDto(Permission permission) {
+        return PermissionDTO.builder()
+                            .id(permission.getId())
+                            .type(permission.getType().getValue())
+                            .role(RoleServiceImpl.mapToInfoDTO(permission.getRole()))
+                            .build();
+    }
 
     @Override
     public List<PermissionDTO> getAllPermissions() {
