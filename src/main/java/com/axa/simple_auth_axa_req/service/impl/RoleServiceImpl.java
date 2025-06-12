@@ -6,6 +6,7 @@ import com.axa.simple_auth_axa_req.dto.role.RoleInfoDTO;
 import com.axa.simple_auth_axa_req.dto.role.UpsertRoleDTO;
 import com.axa.simple_auth_axa_req.model.Role;
 import com.axa.simple_auth_axa_req.repository.RoleRepository;
+import com.axa.simple_auth_axa_req.service.PermissionService;
 import com.axa.simple_auth_axa_req.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
+    private final PermissionService permissionService;
 
     public static RoleDTO mapToDTO(Role role) {
         return RoleDTO.builder()
@@ -41,7 +43,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<RoleDTO> getAllRoles() {
-        return List.of();
+        log.info("req all roles");
+        return roleRepository.findAll().stream().map(RoleServiceImpl::mapToDTO).toList();
     }
 
     @Override
