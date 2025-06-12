@@ -51,11 +51,12 @@ public class UserServiceImpl implements UserService {
     public UserInfoDTO upsertUser(Long userId, UpsertUserDTO dto) {
         log.info("req upsert user, userId: {}", userId);
 
-        User foundUser = userRepository.findById(userId)
-                                       .orElseGet(() -> User.builder()
-                                                            .username(dto.getUsername())
-                                                            .password(passwordEncoder.encode(dto.getPassword()))
-                                                            .build());
+        User foundUser = (userId > 0) ?
+                userRepository.findById(userId).orElseThrow(
+                        () -> new NotFoundException("User not found", null)
+                ) : User.builder()
+                        .username(dto.getUsername())
+                        .build();
 
         if (userId == 0) {
             foundUser.setUsername(dto.getUsername());

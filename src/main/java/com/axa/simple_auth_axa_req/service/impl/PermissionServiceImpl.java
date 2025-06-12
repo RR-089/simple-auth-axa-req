@@ -36,10 +36,13 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public PermissionDTO upsertPermission(Long permissionId, UpsertPermissionDTO dto) {
         log.info("req upsert permission");
-        Permission foundPermission = permissionRepository.findById(permissionId)
-                                                         .orElseGet(() -> Permission.builder()
-                                                                                    .type(dto.getType())
-                                                                                    .build());
+        Permission foundPermission = (permissionId > 0) ?
+                permissionRepository.findById(permissionId)
+                                    .orElseThrow(() -> new NotFoundException("Permission not found", null)) :
+                Permission.builder()
+                          .type(dto.getType())
+                          .build();
+
 
         if (permissionId == 0) {
             foundPermission.setType(dto.getType());
