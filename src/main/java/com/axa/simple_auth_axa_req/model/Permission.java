@@ -1,6 +1,7 @@
 package com.axa.simple_auth_axa_req.model;
 
 import com.axa.simple_auth_axa_req.enums.PermissionType;
+import com.axa.simple_auth_axa_req.enums.converter.PermissionTypeConverter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class Permission {
     @Column(name = "permission_id")
     private Long id;
 
+    @Convert(converter = PermissionTypeConverter.class)
     @Column(name = "permission_type", nullable = false)
     private PermissionType type;
 
