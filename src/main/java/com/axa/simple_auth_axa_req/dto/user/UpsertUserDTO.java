@@ -1,9 +1,11 @@
 package com.axa.simple_auth_axa_req.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 
-@Getter
+@Data
+@Builder
 public class UpsertUserDTO {
     @NotBlank
     private String username;
