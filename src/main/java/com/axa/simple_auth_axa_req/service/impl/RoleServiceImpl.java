@@ -44,7 +44,9 @@ public class RoleServiceImpl implements RoleService {
         return RoleInfoDTO.builder()
                           .id(role.getId())
                           .name(role.getName())
-                          .user(UserServiceImpl.mapToInfoDTO(role.getUser()))
+                          .user(role.getUser() != null ?
+                                  UserServiceImpl.mapToInfoDTO(role.getUser())
+                                  : null)
                           .build();
     }
 
