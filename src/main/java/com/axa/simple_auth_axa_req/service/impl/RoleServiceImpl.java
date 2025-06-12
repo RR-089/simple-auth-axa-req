@@ -4,6 +4,7 @@ package com.axa.simple_auth_axa_req.service.impl;
 import com.axa.simple_auth_axa_req.dto.role.RoleDTO;
 import com.axa.simple_auth_axa_req.dto.role.RoleInfoDTO;
 import com.axa.simple_auth_axa_req.dto.role.UpsertRoleDTO;
+import com.axa.simple_auth_axa_req.exception.NotFoundException;
 import com.axa.simple_auth_axa_req.model.Role;
 import com.axa.simple_auth_axa_req.repository.RoleRepository;
 import com.axa.simple_auth_axa_req.service.PermissionService;
@@ -49,13 +50,24 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleDTO upsertRole(Long roleId, UpsertRoleDTO dto) {
+        log.info("req upsert role, roleId: {}", roleId);
 
+        Role role = (roleId > 0) ? roleRepository.findById(roleId).orElseThrow(
+                () -> new NotFoundException("Role not found", null)) : Role.builder()
+                                                                           .name(dto.getName())
+                                                                           .build();
 
         return null;
     }
 
     @Override
     public void deleteRole(Long roleId) {
+        log.info("req delete roles: {}", roleId);
 
+        if (!roleRepository.existsById(roleId)) {
+            throw new NotFoundException("role not found", null);
+        }
+
+        roleRepository.deleteById(roleId);
     }
 }
