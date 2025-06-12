@@ -1,11 +1,13 @@
 package com.axa.simple_auth_axa_req.dto.role;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 
 import java.util.List;
 
-@Getter
+@Data
+@Builder
 public class UpsertRoleDTO {
     @NotBlank
     private String name;
